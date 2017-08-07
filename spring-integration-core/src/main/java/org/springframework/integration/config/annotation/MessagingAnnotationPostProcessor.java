@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -87,6 +88,9 @@ public class MessagingAnnotationPostProcessor implements BeanPostProcessor, Bean
 
 	private boolean requireComponentAnnotation;
 
+	private final Set<String> beansWithoutAnnotations =
+			Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(256));
+	
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {
 		Assert.isAssignable(ConfigurableListableBeanFactory.class, beanFactory.getClass(),
@@ -167,6 +171,11 @@ public class MessagingAnnotationPostProcessor implements BeanPostProcessor, Bean
 			return bean;
 		}
 
+		// the set will hold records of prior class scans and indicate if no messaging annotations were found
+		if(this.beansWithoutAnnotations.contains(beanClass.getName())) {
+			return bean;
+		}
+
 		ReflectionUtils.doWithMethods(beanClass,
 				new ReflectionUtils.MethodCallback() {
 
@@ -189,6 +198,8 @@ public class MessagingAnnotationPostProcessor implements BeanPostProcessor, Bean
 							List<Annotation> annotations = entry.getValue();
 							processAnnotationTypeOnMethod(bean, beanName, method, annotationType, annotations);
 						}
+						if(annotationChains.size() == 0)
+							beansWithoutAnnotations.add(beanClass.getName());
 					}
 				}, ReflectionUtils.USER_DECLARED_METHODS);
 
