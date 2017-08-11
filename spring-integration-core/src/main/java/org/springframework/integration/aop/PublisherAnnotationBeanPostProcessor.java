@@ -57,8 +57,8 @@ public class PublisherAnnotationBeanPostProcessor extends ProxyConfig
 
 	private volatile ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
-	private final Set<Class> beansCannotApply =
-			Collections.newSetFromMap(new ConcurrentHashMap<Class, Boolean>(256));
+	private final Set<Class<?>> beansCannotApply =
+			Collections.newSetFromMap(new ConcurrentHashMap<Class<?>, Boolean>(256));
 
 	/**
 	 * Set the default channel where Messages should be sent if the annotation

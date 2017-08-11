@@ -88,8 +88,8 @@ public class MessagingAnnotationPostProcessor implements BeanPostProcessor, Bean
 
 	private boolean requireComponentAnnotation;
 
-	private final Set<Class> beansWithoutAnnotations =
-			Collections.newSetFromMap(new ConcurrentHashMap<Class, Boolean>(256));
+	private final Set<Class<?>> beansWithoutAnnotations =
+			Collections.newSetFromMap(new ConcurrentHashMap<Class<?>, Boolean>(256));
 	
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {
