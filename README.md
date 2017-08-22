@@ -1,5 +1,10 @@
 Spring Integration <img src="https://build.spring.io/plugins/servlet/buildStatusImage/INT-B41">
 ==================
+# PayPal change log
+
+## Performance optimization for SI Bean Post Processors
+    Pull Request: https://github.com/spring-projects/spring-integration/pull/2210
+    JIRA: https://jira.spring.io/browse/INT-4327
 
 # Checking out and Building
 
